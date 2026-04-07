@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sphere Labs — Experiences > Things</title>
+<title>Sphere Labs — Things < Experiences</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Cormorant+Garamond:ital,wght@1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
@@ -21,14 +21,19 @@
   --teal: #4CC8B0;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
 
 body {
   background: var(--cream);
   color: var(--ink);
   font-family: 'Outfit', sans-serif;
   font-weight: 300;
-  overflow-x: hidden;
+  min-height: 100%;
 }
 
 /* ── NAV ── */
@@ -65,11 +70,13 @@ nav {
 
 /* ── HERO: SPLIT VIEWPORT ── */
 #hero {
+  background: var(--cream);
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  position: relative;
+  position: sticky;
+  top: 0;
   overflow: hidden;
 }
 
@@ -80,6 +87,7 @@ nav {
   justify-content: center;
   height: 100%;
   padding: 8rem 3vw 6rem;
+  will-change: transform;
 }
 
 .side-label {
@@ -171,22 +179,20 @@ nav {
   margin: 0;
 }
 
-/* ── PAIRS SECTION ── */
-#pairs {
-  padding: 0;
-}
-
+/* ── PAIR CARDS ── */
 .pair {
+  background: var(--cream);
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   height: 100vh;
-  position: relative;
+  position: sticky;
+  top: 0;
   overflow: hidden;
   border-bottom: 1px solid var(--light-border);
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(40px);
+  transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1);
 }
 
 .pair.visible { opacity: 1; transform: translateY(0); }
@@ -198,6 +204,7 @@ nav {
   justify-content: center;
   height: 100%;
   padding: 6rem 3vw;
+  will-change: transform;
 }
 
 .pair-right {
@@ -207,6 +214,7 @@ nav {
   justify-content: center;
   height: 100%;
   padding: 6rem 3vw;
+  will-change: transform;
 }
 
 .pair-center {
@@ -278,12 +286,14 @@ nav {
   display: grid;
   grid-template-columns: 1fr 80px 1fr;
   align-items: center;
-  min-height: 40vh;
+  height: 100vh;
+  position: sticky;
+  top: 0;
   background: var(--ink);
   color: var(--cream);
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(40px);
+  transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1);
 }
 #proof.visible { opacity: 1; transform: translateY(0); }
 
@@ -326,8 +336,9 @@ nav {
 }
 .proof-gt {
   font-family: 'Outfit', sans-serif;
-  font-size: 1.1rem;
+  font-size: clamp(3rem, 7vw, 6rem);
   font-weight: 300;
+  line-height: 1;
   background: var(--grad);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -360,14 +371,17 @@ nav {
 
 /* ── SPHERE CTA ── */
 #cta {
+  background: var(--cream);
   display: grid;
   grid-template-columns: 1fr 80px 1fr;
   align-items: center;
-  min-height: 60vh;
+  height: 100vh;
+  position: sticky;
+  top: 0;
   border-top: 1px solid var(--light-border);
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(40px);
+  transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1);
 }
 #cta.visible { opacity: 1; transform: translateY(0); }
 
@@ -423,8 +437,9 @@ nav {
 }
 .cta-gt {
   font-family: 'Outfit', sans-serif;
-  font-size: 1.1rem;
+  font-size: clamp(3rem, 7vw, 6rem);
   font-weight: 300;
+  line-height: 1;
   background: var(--grad);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -473,6 +488,11 @@ footer {
 .foot-l { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--muted); }
 .foot-r { font-size: 0.7rem; color: var(--muted); }
 
+/* ── CARD DEPTH SHADOW ── */
+.pair, #proof, #cta {
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.08);
+}
+
 /* ── ANIMATIONS ── */
 @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 @keyframes slideRight { from{opacity:0;transform:translateX(-40px);} to{opacity:1;transform:translateX(0);} }
@@ -493,7 +513,7 @@ footer {
   .pair-left { padding: 4rem 6vw 1rem; height: auto; }
   .pair-right { padding: 1rem 6vw 4rem; height: auto; }
   .pair-center { display: none; }
-  .pair-left::after { content: '>'; display: block; font-size: 1.2rem; margin-top: 1rem; opacity: 0.4; }
+  .pair-left::after { content: '<'; display: block; font-size: 1.2rem; margin-top: 1rem; opacity: 0.4; }
   .proof-left, .proof-right, .cta-left, .cta-right { padding: 2.5rem 8vw; text-align: center; align-items: center; }
   .proof-center, .cta-center { display: none; }
 }
@@ -516,7 +536,7 @@ footer {
   </div>
 
   <div class="hero-center">
-    <span class="hero-gt">&gt;</span>
+    <span class="hero-gt">&lt;</span>
   </div>
 
   <div class="hero-side">
@@ -527,86 +547,60 @@ footer {
 
 </section>
 
-<div class="full-divider"></div>
-
 <!-- PAIRS -->
-<section id="pairs">
-
-  <div class="pair">
-    <div class="pair-left">
-      <div>
-        <div class="p-things">Things accumulate.</div>
-      </div>
-    </div>
-    <div class="pair-center"><span class="pair-gt">&gt;</span></div>
-    <div class="pair-right">
-      <div>
-        <div class="p-experiences">Experiences compound.</div>
-        <div class="p-note">Every one builds on the last.</div>
-      </div>
-    </div>
+<section class="pair">
+  <div class="pair-left">
+    <div class="p-things">Things accumulate.</div>
   </div>
-
-  <div class="pair">
-    <div class="pair-left">
-      <div>
-        <div class="p-things">Things depreciate.</div>
-      </div>
-    </div>
-    <div class="pair-center"><span class="pair-gt">&gt;</span></div>
-    <div class="pair-right">
-      <div>
-        <div class="p-experiences">Experiences appreciate.</div>
-        <div class="p-note">The memory grows richer with time.</div>
-      </div>
-    </div>
+  <div class="pair-center"><span class="pair-gt">&lt;</span></div>
+  <div class="pair-right">
+    <div class="p-experiences">Experiences compound.</div>
+    <div class="p-note">Every one builds on the last.</div>
   </div>
+</section>
 
-  <div class="pair">
-    <div class="pair-left">
-      <div>
-        <div class="p-things">Things fill space.</div>
-      </div>
-    </div>
-    <div class="pair-center"><span class="pair-gt">&gt;</span></div>
-    <div class="pair-right">
-      <div>
-        <div class="p-experiences">Experiences fill lives.</div>
-        <div class="p-note">The difference is infinite.</div>
-      </div>
-    </div>
+<section class="pair">
+  <div class="pair-left">
+    <div class="p-things">Things depreciate.</div>
   </div>
-
-  <div class="pair">
-    <div class="pair-left">
-      <div>
-        <div class="p-things">Things can be taken.</div>
-      </div>
-    </div>
-    <div class="pair-center"><span class="pair-gt">&gt;</span></div>
-    <div class="pair-right">
-      <div>
-        <div class="p-experiences">Experiences cannot.</div>
-        <div class="p-note">They are permanently yours.</div>
-      </div>
-    </div>
+  <div class="pair-center"><span class="pair-gt">&lt;</span></div>
+  <div class="pair-right">
+    <div class="p-experiences">Experiences appreciate.</div>
+    <div class="p-note">The memory grows richer with time.</div>
   </div>
+</section>
 
-  <div class="pair">
-    <div class="pair-left">
-      <div>
-        <div class="p-things">Things you own.</div>
-      </div>
-    </div>
-    <div class="pair-center"><span class="pair-gt">&gt;</span></div>
-    <div class="pair-right">
-      <div>
-        <div class="p-experiences">Experiences own you.</div>
-        <div class="p-note">That's not a warning. It's the point.</div>
-      </div>
-    </div>
+<section class="pair">
+  <div class="pair-left">
+    <div class="p-things">Things fill space.</div>
   </div>
+  <div class="pair-center"><span class="pair-gt">&lt;</span></div>
+  <div class="pair-right">
+    <div class="p-experiences">Experiences fill lives.</div>
+    <div class="p-note">The difference is infinite.</div>
+  </div>
+</section>
 
+<section class="pair">
+  <div class="pair-left">
+    <div class="p-things">Things can be taken.</div>
+  </div>
+  <div class="pair-center"><span class="pair-gt">&lt;</span></div>
+  <div class="pair-right">
+    <div class="p-experiences">Experiences cannot.</div>
+    <div class="p-note">They are permanently yours.</div>
+  </div>
+</section>
+
+<section class="pair">
+  <div class="pair-left">
+    <div class="p-things">Things you own.</div>
+  </div>
+  <div class="pair-center"><span class="pair-gt">&lt;</span></div>
+  <div class="pair-right">
+    <div class="p-experiences">Experiences own you.</div>
+    <div class="p-note">That's not a warning. It's the point.</div>
+  </div>
 </section>
 
 <!-- PROOF BAND: dark inversion -->
@@ -615,7 +609,7 @@ footer {
     <div class="proof-headline">The economy<br>of things is mature.</div>
     <div class="proof-sub">Optimized. Finite. Won.</div>
   </div>
-  <div class="proof-center"><span class="proof-gt">&gt;</span></div>
+  <div class="proof-center"><span class="proof-gt">&lt;</span></div>
   <div class="proof-right">
     <div class="proof-statement">The economy of<br><strong>experiences</strong> is just<br>beginning.</div>
   </div>
@@ -628,7 +622,7 @@ footer {
     <div class="cta-name">Sphere Labs</div>
     <div class="cta-tagline">A holdco built<br>for the right side<br>of the equation.</div>
   </div>
-  <div class="cta-center"><span class="cta-gt">&gt;</span></div>
+  <div class="cta-center"><span class="cta-gt">&lt;</span></div>
   <div class="cta-right">
     <div class="cta-invite">We back and build the deep tech companies making experiences the most valuable thing in the world.</div>
     <a href="mailto:hello@spherelabs.co" class="btn-ink">Partner with us →</a>
@@ -636,19 +630,112 @@ footer {
 </div>
 
 <footer>
-  <span class="foot-l">Experiences &gt; Things.™</span>
+  <span class="foot-l">Things &lt; Experiences.™</span>
   <span class="foot-r">© 2025 Sphere Labs</span>
 </footer>
 
 <script>
+// ── STACKING Z-INDEX ──
+const stackOrder = [
+  document.querySelector('#hero'),
+  ...document.querySelectorAll('.pair'),
+  document.querySelector('#proof'),
+  document.querySelector('#cta'),
+];
+stackOrder.forEach((el, i) => { el.style.zIndex = i + 1; });
+
+// ── POP-IN ON SNAP ──
+// ── GENTLE SCROLL SNAP ──
+(function () {
+  const vh = () => window.innerHeight;
+  let snapTimer = null;
+  let isSnapping = false;
+
+  function snapToNearest() {
+    if (isSnapping) return;
+    const y = window.scrollY;
+    const pageSize = vh();
+    const index = y / pageSize;
+    const lower = Math.floor(index);
+    const frac = index - lower;
+
+    // Only snap if within 30% of a boundary, otherwise leave it
+    let target;
+    if (frac < 0.3) target = lower * pageSize;
+    else if (frac > 0.7) target = (lower + 1) * pageSize;
+    else return;
+
+    if (Math.abs(y - target) < 2) return;
+    isSnapping = true;
+    window.scrollTo({ top: target, behavior: 'smooth' });
+    setTimeout(() => { isSnapping = false; }, 700);
+  }
+
+  if ('onscrollend' in window) {
+    window.addEventListener('scrollend', snapToNearest, { passive: true });
+  } else {
+    window.addEventListener('scroll', () => {
+      clearTimeout(snapTimer);
+      snapTimer = setTimeout(snapToNearest, 300);
+    }, { passive: true });
+  }
+})();
+
+// ── POP-IN ON ENTER ──
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.15 });
+}, { threshold: 0.4 });
 
-document.querySelectorAll('.pair, #proof, #cta').forEach((el, i) => {
-  el.style.transitionDelay = `${i * 0.04}s`;
-  obs.observe(el);
-});
+document.querySelectorAll('.pair, #proof, #cta').forEach(el => obs.observe(el));
+
+
+// ── PARALLAX ──
+(function () {
+  const hero = document.querySelector('#hero');
+  const heroLeft  = hero.querySelector('.hero-side:first-child');
+  const heroRight = hero.querySelector('.hero-side:last-child');
+
+  const pairEls = [...document.querySelectorAll('.pair')].map(p => ({
+    section: p,
+    left:  p.querySelector('.pair-left'),
+    right: p.querySelector('.pair-right'),
+  }));
+
+  const HERO_STRENGTH = 70;
+  const PAIR_STRENGTH = 45;
+
+  let ticking = false;
+
+  function applyParallax() {
+    const vh = window.innerHeight;
+
+    // Hero
+    const hr = hero.getBoundingClientRect();
+    const hProgress = (hr.top + hr.height / 2 - vh / 2) / vh;
+    heroLeft.style.transform  = `translateY(${hProgress * HERO_STRENGTH}px)`;
+    heroRight.style.transform = `translateY(${hProgress * -HERO_STRENGTH}px)`;
+
+    // Pairs
+    pairEls.forEach(({ section, left, right }) => {
+      const r = section.getBoundingClientRect();
+      const progress = (r.top + r.height / 2 - vh / 2) / vh;
+      left.style.transform  = `translateY(${progress * PAIR_STRENGTH}px)`;
+      right.style.transform = `translateY(${progress * -PAIR_STRENGTH}px)`;
+    });
+
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(applyParallax);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  applyParallax();
+})();
 </script>
 
 </body>
