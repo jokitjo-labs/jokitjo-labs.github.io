@@ -591,8 +591,7 @@ footer {
 
 /* ── RESPONSIVE ── */
 @media(max-width:680px){
-  /* touch-action alone prevents native scroll — overflow:hidden breaks iOS touch events */
-  html, body { touch-action: none; height: 100%; }
+  html, body { height: 100%; }
 
   /* NAV */
   .nav-logo img { height: 32px; }
@@ -830,10 +829,24 @@ if (window.innerWidth > 680) {
   }
 })();
 
-// ── MOBILE SWIPE (zero momentum) ──
+// ── MOBILE SWIPE ──
 (function () {
   if (window.innerWidth > 680) return;
 
+  // Create a fixed overflow:hidden container — iOS respects this on non-root elements
+  const deck = document.createElement('div');
+  Object.assign(deck.style, {
+    position:   'fixed',
+    top:        '0',
+    left:       '0',
+    width:      '100%',
+    height:     '100%',
+    overflow:   'hidden',
+    zIndex:     '10',
+  });
+  document.body.appendChild(deck);
+
+  // Collect sections and move them into the deck
   const targets = [
     document.querySelector('#hero'),
     ...document.querySelectorAll('.pair-left, .pair-right'),
@@ -841,64 +854,53 @@ if (window.innerWidth > 680) {
     document.querySelector('#cta'),
   ].filter(Boolean);
 
-  // Fix every section: stack them all at top:0, z-index by order
   targets.forEach((el, i) => {
-    el.style.position  = 'fixed';
-    el.style.top       = '0';
-    el.style.left      = '0';
-    el.style.width     = '100%';
-    el.style.height    = '100vh';
-    el.style.zIndex    = 100 + i;
-    el.style.transition = 'transform 0.65s cubic-bezier(0.16,1,0.3,1)';
-    // Start: hero visible, everything else waiting below
-    el.style.transform = i === 0 ? 'translateY(0)' : 'translateY(100vh)';
+    deck.appendChild(el);
+    Object.assign(el.style, {
+      position:   'absolute',
+      top:        '0',
+      left:       '0',
+      width:      '100%',
+      height:     '100%',
+      zIndex:     String(i),
+      transition: 'transform 0.65s cubic-bezier(0.16,1,0.3,1)',
+      transform:  i === 0 ? 'translateY(0)' : 'translateY(100vh)',
+    });
   });
 
   let idx = 0;
   let busy = false;
   let startY = 0;
-  let lastY = 0;
   let startTime = 0;
 
   function goTo(i) {
     if (i < 0 || i >= targets.length || busy) return;
     busy = true;
-
     if (i > idx) {
-      // Forward: next section slides up over current (current stays put)
       targets[i].style.transform = 'translateY(0)';
     } else {
-      // Backward: current slides back down, revealing the one beneath
       targets[idx].style.transform = 'translateY(100vh)';
     }
-
     idx = i;
     setTimeout(() => { busy = false; }, 700);
   }
 
-  function processSwipe(endY) {
+  // Attach to deck, not window — more reliable on iOS
+  // preventDefault on touchstart is the only guaranteed way to block iOS scroll
+  deck.addEventListener('touchstart', e => {
+    e.preventDefault();
+    startY    = e.touches[0].clientY;
+    startTime = Date.now();
+  }, { passive: false });
+
+  deck.addEventListener('touchend', e => {
     if (busy) return;
-    const diff     = startY - endY;
+    const diff     = startY - e.changedTouches[0].clientY;
     const velocity = Math.abs(diff) / (Date.now() - startTime);
     if (Math.abs(diff) > 35 || velocity > 0.3) {
       goTo(diff > 0 ? idx + 1 : idx - 1);
     }
-  }
-
-  // touch-action:none in CSS handles scroll prevention — no preventDefault needed
-  window.addEventListener('touchstart', e => {
-    startY    = e.touches[0].clientY;
-    lastY     = startY;
-    startTime = Date.now();
   }, { passive: true });
-
-  window.addEventListener('touchmove', e => {
-    lastY = e.touches[0].clientY;
-  }, { passive: true });
-
-  // touchcancel fires instead of touchend on iOS when scroll is suppressed
-  window.addEventListener('touchend',    e => processSwipe(e.changedTouches[0].clientY), { passive: true });
-  window.addEventListener('touchcancel', () => processSwipe(lastY),                       { passive: true });
 })();
 
 // ── POP-IN ON ENTER ──
