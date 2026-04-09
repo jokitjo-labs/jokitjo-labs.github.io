@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sphere Labs — Things < Experiences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Cormorant+Garamond:ital,wght@1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #F3F0E8;
+  --ink: #0C0C0C;
+  --muted: #A09C94;
+  --light-border: rgba(12,12,12,0.1);
+  --grad: linear-gradient(135deg, #E2457A 0%, #5B70CC 55%, #4CC8B0 100%);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--cream);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  color: var(--ink);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 6vw;
+  mix-blend-mode: multiply;
+}
+
+.nav-logo img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1) contrast(1.2);
+  opacity: 0.7;
+  display: block;
+}
+
+.nav-right {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+/* ── DECK ── */
+#deck {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 10;
+}
+
+/* ── SLIDE BASE ── */
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 8vw 3rem;
+  transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* ── OPERATOR ── */
+.op {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 300;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin: 0.6rem 0;
+}
+
+/* ── NOTE ── */
+.note {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-weight: 300;
+  font-family: 'Outfit', sans-serif;
+  text-align: center;
+  margin-top: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  animation: noteFloat 2.8s ease-in-out infinite;
+  cursor: pointer;
+}
+
+.note::after {
+  content: '^';
+  display: inline-block;
+  transform: rotate(180deg);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+/* ── HERO SLIDE ── */
+#slide-hero {
+  background: var(--cream);
+  gap: 0;
+}
+
+.hero-things {
+  font-family: 'Abril Fatface', serif;
+  font-size: clamp(3rem, 16vw, 4.5rem);
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  opacity: 0;
+  animation: slideDown 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
+}
+
+.hero-experiences {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.6rem, 14vw, 4rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+  line-height: 1;
+  opacity: 0;
+  animation: slideUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
+}
+
+#slide-hero .op {
+  opacity: 0;
+  animation: fadeIn 0.6s ease 0.5s forwards;
+}
+
+#slide-hero .note {
+  color: var(--muted);
+  opacity: 0;
+  animation: fadeIn 0.6s ease 0.8s forwards, noteFloat 2.8s ease-in-out 1.4s infinite;
+}
+
+/* ── PAIR SLIDES ── */
+.slide-pair {
+  background: var(--cream);
+  border-bottom: 1px solid var(--light-border);
+}
+
+.p-things {
+  font-family: 'Abril Fatface', serif;
+  font-size: clamp(1.8rem, 9vw, 2.8rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--ink);
+}
+
+.p-experiences {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.8rem, 9vw, 2.8rem);
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--ink);
+}
+
+/* ── PROOF SLIDE ── */
+#slide-proof {
+  background: var(--ink);
+  color: var(--cream);
+  gap: 0;
+}
+
+.proof-dim {
+  font-family: 'Abril Fatface', serif;
+  font-size: clamp(1.4rem, 7vw, 2rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: rgba(243,240,232,0.22);
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+.proof-dim-sub {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(243,240,232,0.22);
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.proof-statement {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.4rem, 7vw, 2rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.25;
+  color: var(--cream);
+  text-align: center;
+  margin-top: 0;
+}
+
+.proof-statement strong {
+  font-style: normal;
+  font-weight: 300;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#slide-proof .note {
+  color: rgba(243,240,232,0.6);
+}
+
+#slide-proof .note::after {
+  color: rgba(243,240,232,0.6);
+  -webkit-text-fill-color: rgba(243,240,232,0.6);
+}
+
+/* ── CTA SLIDE ── */
+#slide-cta {
+  background: var(--cream);
+  border-top: 1px solid var(--light-border);
+  gap: 0;
+}
+
+.cta-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.2rem;
+}
+
+.cta-tagline {
+  font-family: 'Abril Fatface', serif;
+  font-size: clamp(1.4rem, 7vw, 2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.cta-invite {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.3rem, 6vw, 1.8rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--ink);
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1.8rem;
+}
+
+.btn-ink {
+  display: inline-block;
+  padding: 0.85rem 2rem;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 100px;
+}
+
+/* ── FOOTER SLIDE ── */
+#slide-footer {
+  background: var(--cream);
+  justify-content: flex-end;
+  padding-bottom: 3rem;
+  border-top: 1px solid var(--light-border);
+}
+
+.foot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.foot-l, .foot-r {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeIn   { from { opacity: 0; }                          to { opacity: 1; } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp   { from { opacity: 0; transform: translateY(24px);  } to { opacity: 1; transform: translateY(0); } }
+@keyframes noteFloat {
+  0%, 100% { transform: translateY(0);   opacity: 0.7; }
+  50%       { transform: translateY(5px); opacity: 1;   }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><img src="Sphere_window_cling.png" alt="Sphere Labs"></div>
+  <a href="https://www.linkedin.com/company/wearesphere/" class="nav-right" target="_blank" rel="noopener">Partner →</a>
+</nav>
+
+<div id="deck">
+
+  <!-- HERO -->
+  <div class="slide" id="slide-hero">
+    <div class="hero-things">Things.</div>
+    <span class="op">&lt;</span>
+    <div class="hero-experiences">Experiences.</div>
+    <div class="note" data-next="1">Our philosophy</div>
+  </div>
+
+  <!-- PAIR 1 -->
+  <div class="slide slide-pair" id="slide-pair-0">
+    <div class="p-things">Things accumulate.</div>
+    <span class="op">&lt;</span>
+    <div class="p-experiences">Experiences compound.</div>
+    <div class="note" data-next="2">Every one builds on the last.</div>
+  </div>
+
+  <!-- PAIR 2 -->
+  <div class="slide slide-pair" id="slide-pair-1">
+    <div class="p-things">Things depreciate.</div>
+    <span class="op">&lt;</span>
+    <div class="p-experiences">Experiences appreciate.</div>
+    <div class="note" data-next="3">The memory grows richer with time.</div>
+  </div>
+
+  <!-- PAIR 3 -->
+  <div class="slide slide-pair" id="slide-pair-2">
+    <div class="p-things">Things fill space.</div>
+    <span class="op">&lt;</span>
+    <div class="p-experiences">Experiences fill lives.</div>
+    <div class="note" data-next="4">The difference is infinite.</div>
+  </div>
+
+  <!-- PAIR 4 -->
+  <div class="slide slide-pair" id="slide-pair-3">
+    <div class="p-things">Things can be taken.</div>
+    <span class="op">&lt;</span>
+    <div class="p-experiences">Experiences cannot.</div>
+    <div class="note" data-next="5">They are permanently yours.</div>
+  </div>
+
+  <!-- PAIR 5 -->
+  <div class="slide slide-pair" id="slide-pair-4">
+    <div class="p-things">Things you own.</div>
+    <span class="op">&lt;</span>
+    <div class="p-experiences">Experiences own you.</div>
+    <div class="note" data-next="6">That's not a warning. It's the point.</div>
+  </div>
+
+  <!-- PROOF -->
+  <div class="slide" id="slide-proof">
+    <div class="proof-dim">The economy<br>of things is mature.</div>
+    <div class="proof-dim-sub">Optimized. Finite. Won.</div>
+    <span class="op">&lt;</span>
+    <div class="proof-statement">The economy of<br><strong>experiences</strong> is just<br>beginning.</div>
+    <div class="note" data-next="7">The holdco making the impact</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="slide" id="slide-cta">
+    <div class="cta-label">Sphere Labs</div>
+    <div class="cta-tagline">A holdco built<br>for the right side<br>of the equation.</div>
+    <span class="op">&lt;</span>
+    <div class="cta-invite">We back and build the deep tech companies making experiences the most valuable thing in the world.</div>
+    <a href="https://www.linkedin.com/company/wearesphere/" class="btn-ink" target="_blank" rel="noopener">Partner with us →</a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="slide" id="slide-footer">
+    <div class="foot-row">
+      <span class="foot-l">Things &lt; Experiences.™</span>
+      <span class="foot-r">© 2025 Sphere Labs</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  const deck = document.getElementById('deck');
+  const slides = Array.from(deck.querySelectorAll('.slide'));
+  const total = slides.length;
+  let idx = 0;
+  let busy = false;
+
+  // Position all slides: first at 0, rest below
+  slides.forEach((el, i) => {
+    el.style.transform = i === 0 ? 'translateY(0)' : 'translateY(100%)';
+    el.style.zIndex = String(i + 1);
+  });
+
+  function goTo(i) {
+    if (i < 0 || i >= total || busy || i === idx) return;
+    busy = true;
+
+    if (i > idx) {
+      // going forward: slide current up, bring next from below
+      slides[idx].style.transform = 'translateY(-100%)';
+      slides[i].style.transform   = 'translateY(0)';
+    } else {
+      // going back: slide current back down, reveal previous
+      slides[idx].style.transform = 'translateY(100%)';
+      slides[i].style.transform   = 'translateY(0)';
+    }
+
+    idx = i;
+    setTimeout(() => { busy = false; }, 650);
+  }
+
+  // Touch swipe
+  let startY = 0;
+  let startTime = 0;
+
+  deck.addEventListener('touchstart', e => {
+    startY    = e.touches[0].clientY;
+    startTime = Date.now();
+  }, { passive: true });
+
+  deck.addEventListener('touchend', e => {
+    if (busy) return;
+    const diff     = startY - e.changedTouches[0].clientY;
+    const velocity = Math.abs(diff) / (Date.now() - startTime);
+    if (Math.abs(diff) > 35 || velocity > 0.3) {
+      goTo(diff > 0 ? idx + 1 : idx - 1);
+    }
+  }, { passive: true });
+
+  // Note tap → go to next slide
+  deck.querySelectorAll('.note[data-next]').forEach(note => {
+    note.addEventListener('click', () => {
+      const target = parseInt(note.dataset.next, 10);
+      goTo(target);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
