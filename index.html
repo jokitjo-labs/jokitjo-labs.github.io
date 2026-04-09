@@ -606,34 +606,32 @@ footer {
   /* PAIRS */
   .pair {
     position: static !important;
-    display: block;
-    height: auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     opacity: 1;
     transform: none;
     box-shadow: none;
     border-bottom: none;
+    background: var(--cream);
   }
   .pair-left, .pair-right {
-    background: var(--cream);
-    height: 100vh;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 6rem 8vw 4rem;
+    padding: 1.5rem 8vw;
+    height: auto;
   }
-  .pair-center { display: none; }
-  .pair-left::after {
-    content: '<';
-    display: block;
-    font-size: 1.4rem;
-    margin-top: 1.5rem;
-    opacity: 0.35;
-    background: var(--grad);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .pair-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0;
   }
+  .pair-center::before { display: none; }
+  .pair-left::after { display: none; }
   .p-note { white-space: normal; }
 
   /* PROOF */
@@ -849,7 +847,7 @@ if (window.innerWidth > 680) {
   // Collect sections and move them into the deck
   const targets = [
     document.querySelector('#hero'),
-    ...document.querySelectorAll('.pair-left, .pair-right'),
+    ...document.querySelectorAll('.pair'),
     document.querySelector('#proof'),
     document.querySelector('#cta'),
   ].filter(Boolean);
