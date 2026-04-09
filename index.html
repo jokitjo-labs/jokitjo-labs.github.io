@@ -703,6 +703,11 @@ footer {
 </footer>
 
 <script>
+// ── MOBILE REDIRECT ──
+if (window.innerWidth < 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+  window.location.replace('/mobile.html');
+}
+
 // ── STACKING Z-INDEX ──
 const stackOrder = [
   document.querySelector('#hero'),
